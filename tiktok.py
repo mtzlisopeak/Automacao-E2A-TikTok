@@ -1,55 +1,51 @@
-import pyautogui as bot
-from time import sleep
-import os
+import pyautogui as gui from time import sleep import os
 
-validas = 0
-invalidas = 0
+valid_actions = 0 invalid_actions = 0
 
-class Robot:
-    def init(self):
-        pass
+class Robot: def init(self): pass
 
-    def clicar(self, img, confidence=0.9, grayscale=True):
-        tempo = 0
-        while tempo < 10:
-            try:
-                localizacao_img = bot.locateCenterOnScreen(img, confidence=confidence, grayscale=grayscale)
-                bot.click(localizacao_img, duration=0.5)
-                return
-            except:
-                sleep(1)
-                tempo += 1
+def click_image(self, image_path, confidence=0.9, grayscale=True):
+    elapsed = 0
+    while elapsed < 10:
+        try:
+            location = gui.locateCenterOnScreen(
+                image_path,
+                confidence=confidence,
+                grayscale=grayscale
+            )
+            gui.click(location, duration=0.5)
+            return
+        except:
+            sleep(1)
+            elapsed += 1
 
-    def confirmar_acao(self):
-        global validas
-        bot.hotkey('ctrl', 'w')
-        robo.clicar('img/confirmar.png')
-        validas += 1
+def confirm_action(self):
+    global valid_actions
+    gui.hotkey('ctrl', 'w')
+    robot.click_image('img/confirmar.png')  # keep your image names or rename accordingly
+    valid_actions += 1
 
-    def invalidar_acao(self):
-        global invalidas
-        bot.hotkey('ctrl', 'w')
-        robo.clicar('img/pular.png')
-        invalidas += 1
+def skip_action(self):
+    global invalid_actions
+    gui.hotkey('ctrl', 'w')
+    robot.click_image('img/pular.png')  # keep your image names or rename accordingly
+    invalid_actions += 1
 
-robo = Robot()
+robot = Robot()
 
 os.system('cls')
 
-while True:
-    robo.clicar('img/acessar.png')
-    try:
-        robo.clicar('img/seguir.png')
-        sleep(2)
-    except:
-        pass
-    bot.hotkey('ctrl', 'r')
-    sleep(5)
-    try:
-        bot.locateCenterOnScreen('img/msg.png', confidence=0.9, grayscale=True)
-        robo.confirmar_acao()
-    except:
-        robo.invalidar_acao()
-    os.system('cls')
-    print(f'Validas: {validas}\nInvalidas: {invalidas}')
-    sleep(15)
+while True: robot.click_image('img/acessar.png') try: robot.click_image('img/seguir.png') sleep(2) except: pass
+
+gui.hotkey('ctrl', 'r')
+sleep(5)
+
+try:
+    gui.locateCenterOnScreen('img/msg.png', confidence=0.9, grayscale=True)
+    robot.confirm_action()
+except:
+    robot.skip_action()
+
+os.system('cls')
+print(f'Valid actions: {valid_actions}\nInvalid actions: {invalid_actions}')
+sleep(15)
